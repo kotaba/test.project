@@ -14,4 +14,22 @@ class Workers extends ActiveRecord
     {
         return '{{workers}}';
     }
+
+    public function getName()
+    {
+        return "{$this->first_name} {$this->last_name}";
+    }
+
+    public static function getOptions()
+    {
+        $data = [];
+
+        $workers = Workers::find()->all();
+
+        foreach ($workers as $worker) {
+            $data[$worker->id] = $worker->name;
+        }
+
+        return $data;
+    }
 }

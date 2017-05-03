@@ -37,19 +37,22 @@ $config = [
                 ],
             ],
         ],
-        /*
         'urlManager' => [
             'enablePrettyUrl' => true,
             'showScriptName' => false,
             'rules' => [
+                '/control/dishes'=>'dishes/index',
+                '/dishes/create'=>'dishes/create',
+                '/control/orders'=>'orders/index',
+                '/control/workers'=>'worker/index',
+                '/control/dishes/update'=>'dishes/update',
             ],
         ],
-        */
     ],
     'params' => $params,
 ];
 
-if (YII_ENV_DEV) {
+if (YII_DEBUG) {
     // configuration adjustments for 'dev' environment
     $config['bootstrap'][] = 'debug';
     $config['modules']['debug'] = [
@@ -62,7 +65,7 @@ if (YII_ENV_DEV) {
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
         // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['127.0.0.1', '::1'],
     ];
 }
 

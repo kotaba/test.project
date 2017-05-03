@@ -10,7 +10,6 @@ class m170503_121741_add_dishes_table extends Migration
             'id' => 'INT(11) UNSIGNED PRIMARY KEY AUTO_INCREMENT',
             'name' => 'VARCHAR(100) NOT NULL',
             'price' => 'DECIMAL(6,2) NOT NULL',
-            'weight' => 'INT(11) DEFAULT 0'
         ]);
     }
 

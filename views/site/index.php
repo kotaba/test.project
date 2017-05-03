@@ -2,52 +2,120 @@
 
 /* @var $this yii\web\View */
 
+use yii\grid\GridView;
+use yii\widgets\Pjax;
+
 $this->title = 'My Yii Application';
 ?>
 <div class="site-index">
 
-    <div class="jumbotron">
-        <h1>Congratulations!</h1>
-
-        <p class="lead">You have successfully created your Yii-powered application.</p>
-
-        <p><a class="btn btn-lg btn-success" href="http://www.yiiframework.com">Get started with Yii</a></p>
-    </div>
-
+    <h3>Last 5 Orders</h3>
     <div class="body-content">
 
-        <div class="row">
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+        <?php Pjax::begin(['id' => 'stats']) ?>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+        <?= GridView::widget([
+            'dataProvider' => $dataProvider,
+            'summary' => '',
+            'columns' => [
+                'id',
+                'created_at',
+                [
+                    'attribute' => 'worker_name',
+                    'format' => 'raw',
+                    'value' => function ($model) {
+                        return $model->getWorkerName();
+                    },
+                ],
+                [
+                    'attribute' => 'dishes',
+                    'format' => 'raw',
+                    'value' => function ($model) {
+                        return $model->getDishesNames();
+                    }
+                ],
+                [
+                    'attribute' => 'order_sum',
+                    'format' => 'raw',
+                    'value' => function ($model) {
+                        return $model->getOrderSum() . ' UAH';
+                    }
+                ]
+            ]
+        ]) ?>
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/doc/">Yii Documentation &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+        <h3>Most popular 5 Dishes</h3>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+        <?= GridView::widget([
+            'dataProvider' => $dataProviderDishes,
+            'summary' => '',
+            'columns' => [
+                'name',
+                [
+                    'attribute' => 'orders_count_today',
+                    'format' => 'raw',
+                    'value' => function ($model) {
+                        return $model->orders_count;
+                    }
+                ],
+                [
+                    'attribute' => 'selled_sum',
+                    'format' => 'raw',
+                    'value' => function ($model) {
+                        return $model->selled_sum . ' UAH';
+                    }
+                ]
+            ]
+        ]) ?>
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/forum/">Yii Forum &raquo;</a></p>
-            </div>
-            <div class="col-lg-4">
-                <h2>Heading</h2>
+        <h3>Today selled sum</h3>
 
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, sed do eiusmod tempor incididunt ut labore et
-                    dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip
-                    ex ea commodo consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu
-                    fugiat nulla pariatur.</p>
+        <?= GridView::widget([
+            'dataProvider' => $dataProviderDaySell,
+            'summary' => '',
+            'columns'=>[
+                [
+                    'attribute'=>'sum',
+                    'format'=>'raw',
+                    'value' => function ($data) {
+                        return $data['sum'] . ' UAH';
+                    }
+                ]
+            ]
+        ]);
+        ?>
 
-                <p><a class="btn btn-default" href="http://www.yiiframework.com/extensions/">Yii Extensions &raquo;</a></p>
-            </div>
-        </div>
+        <?php yii\widgets\Pjax::end(); ?>
 
     </div>
+
 </div>
+
+<script>
+
+    document.addEventListener("DOMContentLoaded", ready);
+
+    function ready() {
+
+        socket = new WebSocket('ws://<?php echo $_SERVER['SERVER_NAME'] ?>:8080');
+        socket.onopen = function (e) {
+            setInterval(function () {
+                var ping = JSON.stringify({'action': 'ping', 'params': {}});
+                socket.send(ping);
+            }, 2000);
+        };
+        socket.onmessage = function (e) {
+            var data = JSON.parse(e.data);
+            if (data.action == 'refreshStats') {
+
+                $.pjax.reload({container: "#stats"});
+
+                $('#w0').fadeIn(2000);
+                $('#w0').fadeOut(2000);
+
+                $('#w1').fadeIn(2000);
+                $('#w1').fadeOut(2000);
+            }
+        };
+    }
+</script>

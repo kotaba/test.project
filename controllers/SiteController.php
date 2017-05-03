@@ -8,6 +8,10 @@ use yii\web\Controller;
 use yii\filters\VerbFilter;
 use app\models\LoginForm;
 use app\models\ContactForm;
+use app\models\Orders;
+use app\models\Dishes;
+use yii\data\ActiveDataProvider;
+use yii\data\ArrayDataProvider;
 
 class SiteController extends Controller
 {
@@ -60,7 +64,35 @@ class SiteController extends Controller
      */
     public function actionIndex()
     {
-        return $this->render('index');
+        $orders = Orders::find();
+
+        $dataProvider = new ActiveDataProvider([
+            'query' => $orders->limit(5),
+            'sort' => ['defaultOrder' => ['created_at' => SORT_DESC]],
+            'pagination' => false
+        ]);
+
+        $mostPopularDishes = Dishes::getMostPopular();
+
+        $dataProviderDishes = new ActiveDataProvider([
+            'query' => $mostPopularDishes->limit(5)->orderBy(['orders_count' => SORT_DESC]),
+            'pagination' => false
+        ]);
+
+        $sumOrders = Orders::getAllOrdersSum();
+
+        $dataProviderDaySell = new ArrayDataProvider([
+            'key' => 'id',
+            'allModels' => $sumOrders,
+            'sort' => [
+                'attributes' => ['id', 'sum'],
+            ]]);
+
+        return $this->render('index', [
+            'dataProvider' => $dataProvider,
+            'dataProviderDishes' => $dataProviderDishes,
+            'dataProviderDaySell' => $dataProviderDaySell
+        ]);
     }
 
     /**

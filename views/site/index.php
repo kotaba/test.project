@@ -102,7 +102,7 @@ $this->title = 'Cafe Borsh and Herring - Main';
             setInterval(function () {
                 var ping = JSON.stringify({'action': 'ping', 'params': {}});
                 socket.send(ping);
-            }, 10000);
+            }, 2000);
         };
         socket.onmessage = function (e) {
             var data = JSON.parse(e.data);

@@ -26,7 +26,6 @@ class wsServer implements MessageComponentInterface
     public function onOpen(ConnectionInterface $conn)
     {
         $this->connections->attach($conn);
-        echo "New client ({$conn->resourceId})\n";
     }
 
     /**
@@ -38,8 +37,6 @@ class wsServer implements MessageComponentInterface
     {
         $data = json_decode($msg, true);
         if (!is_null($data)) {
-            echo $from->resourceId . "\n";
-            echo 'action is: ' . $data['action'];
             switch ($data['action']) {
                 case 'refreshStats':
                     foreach ($this->connections as $client) {
@@ -55,7 +52,6 @@ class wsServer implements MessageComponentInterface
     public function onClose(ConnectionInterface $conn)
     {
         $this->connections->detach($conn);
-        echo "Connection {$conn->resourceId} has disconnected\n";
     }
 
     /**
@@ -64,7 +60,6 @@ class wsServer implements MessageComponentInterface
      */
     public function onError(ConnectionInterface $conn, \Exception $e)
     {
-        echo "An error has occurred: {$e->getMessage()}\n";
         $conn->close();
     }
 }

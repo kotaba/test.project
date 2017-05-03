@@ -5,6 +5,12 @@ namespace app\console\components;
 use Ratchet\ConnectionInterface;
 use Ratchet\MessageComponentInterface;
 
+/**
+ * Class wsServer
+ * @package app\console\components
+ *
+ * Websocket server class
+ */
 class wsServer implements MessageComponentInterface
 {
     protected $connections;

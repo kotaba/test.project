@@ -5,7 +5,7 @@
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 
-$this->title = 'My Yii Application';
+$this->title = 'Cafe Borsh and Herring - Main';
 ?>
 <div class="site-index">
 
@@ -102,19 +102,13 @@ $this->title = 'My Yii Application';
             setInterval(function () {
                 var ping = JSON.stringify({'action': 'ping', 'params': {}});
                 socket.send(ping);
-            }, 2000);
+            }, 10000);
         };
         socket.onmessage = function (e) {
             var data = JSON.parse(e.data);
             if (data.action == 'refreshStats') {
 
                 $.pjax.reload({container: "#stats"});
-
-                $('#w0').fadeIn(2000);
-                $('#w0').fadeOut(2000);
-
-                $('#w1').fadeIn(2000);
-                $('#w1').fadeOut(2000);
             }
         };
     }

@@ -27,7 +27,7 @@ AppAsset::register($this);
 <div class="wrap">
     <?php
     NavBar::begin([
-        'brandLabel' => 'My Company',
+        'brandLabel' => 'CPanel',
         'brandUrl' => Yii::$app->homeUrl,
         'options' => [
             'class' => 'navbar-inverse navbar-fixed-top',
@@ -37,7 +37,18 @@ AppAsset::register($this);
         'options' => ['class' => 'navbar-nav navbar-right'],
         'items' => [
             ['label' => 'Home', 'url' => ['/site/index']],
-            ['label' => 'Control Panel', 'url' => ['/site/control']],
+            ['label' => 'Orders', 'items'=>[
+                ['label'=>'View orders', 'url'=>'/control/orders'],
+                ['label'=>'Add order', 'url'=>'/orders/create']
+            ]],
+            ['label' => 'Dishes', 'items'=>[
+                ['label'=>'View dishes', 'url'=>'/control/dishes'],
+                ['label'=>'Add dish', 'url'=>'/dishes/create']
+            ]],
+            ['label' => 'Workers', 'items'=>[
+                ['label'=>'View workers', 'url'=>'/control/workers'],
+                ['label'=>'Add worker', 'url'=>'/worker/create']
+            ]],
         ],
     ]);
     NavBar::end();
@@ -53,9 +64,7 @@ AppAsset::register($this);
 
 <footer class="footer">
     <div class="container">
-        <p class="pull-left">&copy; My Company <?= date('Y') ?></p>
-
-        <p class="pull-right"><?= Yii::powered() ?></p>
+        <p class="pull-left">&copy; CPanel <?= date('Y') ?></p>
     </div>
 </footer>
 

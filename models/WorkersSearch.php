@@ -20,7 +20,6 @@ class WorkersSearch extends Workers
         return [
             [['id'], 'integer'],
             [['first_name', 'last_name'], 'safe'],
-            [['first_name', 'last_name'], 'required'],
         ];
     }
 

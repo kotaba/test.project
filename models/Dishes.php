@@ -24,6 +24,7 @@ class Dishes extends ActiveRecord
         return [
             [['name', 'price'], 'required'],
             [['name', 'price'], 'safe'],
+            ['price', 'match', 'pattern'=>'/^\$?[\d,]+(\.\d*)?$/']
         ];
     }
 
@@ -34,6 +35,8 @@ class Dishes extends ActiveRecord
 
     /**
      * @return array
+     *
+     * Get options for select
      */
     public static function getOptions()
     {
@@ -50,6 +53,8 @@ class Dishes extends ActiveRecord
 
     /**
      * @return $this
+     *
+     * Most popular 5 dishes today
      */
     public static function getMostPopular()
     {

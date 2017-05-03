@@ -51,6 +51,8 @@ class Orders extends ActiveRecord
 
     /**
      * @return \yii\db\ActiveQuery
+     *
+     * Get single worker related to this order
      */
     public function getWorker()
     {
@@ -59,6 +61,8 @@ class Orders extends ActiveRecord
 
     /**
      * @return mixed
+     *
+     * Get worker name for this order
      */
     public function getWorkerName()
     {
@@ -69,6 +73,8 @@ class Orders extends ActiveRecord
 
     /**
      * @return $this
+     *
+     * Get dishes related to this order
      */
     public function getDishes()
     {
@@ -79,6 +85,8 @@ class Orders extends ActiveRecord
 
     /**
      * @return string
+     *
+     * Get name of dishes related to this order
      */
     public function getDishesNames()
     {
@@ -95,6 +103,8 @@ class Orders extends ActiveRecord
 
     /**
      * @return int
+     *
+     * Get total sum of dishes for this order
      */
     public function getOrderSum()
     {
@@ -111,6 +121,8 @@ class Orders extends ActiveRecord
 
     /**
      * @return array
+     *
+     * Get sum of today orders
      */
     public static function getAllOrdersSum()
     {

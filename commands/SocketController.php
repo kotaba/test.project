@@ -8,6 +8,12 @@ use Ratchet\WebSocket\WsServer;
 use app\console\components\wsServer as wsComponent;
 use yii\console\Controller;
 
+/**
+ * Class SocketController
+ * @package app\commands
+ *
+ * Command for start websocket server
+ */
 class SocketController extends Controller
 {
     /**
